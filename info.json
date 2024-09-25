@@ -1,0 +1,5 @@
+{
+  "description": "The unofficial Interactive Brokers Connector (IBC) ; in its source version.",
+  "type": "module",
+  "dependencies": ["ibg", "ant"]
+}
