@@ -1,0 +1,199 @@
+{
+  "_title": "IB Connector",
+  "FIX": {
+    "default": "no",
+    "value": "no",
+    "description": "Starts the FIX CTCI gateway.",
+    "detailed_description": "Setting this to 'yes' starts the FIX CTCI gateway used for order routing. The default is 'no'.",
+    "internal": true
+  },
+  "AuthenticationSettings": {
+    "IbLoginId": {
+      "default": "",
+      "value": "",
+      "description": "TWS/IBG username.",
+      "detailed_description": "Your TWS username, used for logging into Trader Workstation or IB Gateway.",
+      "internal": false
+    },
+    "IbPassword": {
+      "default": "",
+      "value": "",
+      "description": "TWS/IBG password.",
+      "detailed_description": "Your TWS password, used for secure authentication to the Trader Workstation or IB Gateway.",
+      "internal": true
+    },
+    "FIXLoginId": {
+      "default": "",
+      "value": "sartlo269",
+      "description": "FIX CTCI username.",
+      "detailed_description": "This field is for the username required for logging into the FIX CTCI gateway, if applicable.",
+      "internal": true
+    },
+    "FIXPassword": {
+      "default": "",
+      "value": "",
+      "description": "FIX CTCI password.",
+      "detailed_description": "The password for logging into the FIX CTCI gateway, used for secure authentication.",
+      "internal": true
+    },
+    "SecondFactorDevice": {
+      "default": "",
+      "value": "",
+      "description": "Second factor authentication device.",
+      "detailed_description": "Specifies the second factor device to be used if multiple devices are enabled for your account.",
+      "internal": false
+    },
+    "ReloginAfterSecondFactorAuthenticationTimeout": {
+      "default": "no",
+      "value": "",
+      "description": "Retry login after second factor timeout.",
+      "detailed_description": "Automatically retries login if second factor authentication times out. Default is 'no'.",
+      "internal": false
+    },
+    "SecondFactorAuthenticationTimeout": {
+      "default": 180,
+      "value": "",
+      "description": "Timeout for second factor authentication.",
+      "detailed_description": "The number of seconds before the second factor authentication process times out. Default is 180 seconds.",
+      "internal": false
+    },
+    "ExitAfterSecondFactorAuthenticationTimeout": {
+      "default": "no",
+      "value": "no",
+      "description": "Exit after second factor authentication timeout.",
+      "detailed_description": "Deprecated setting. Determines whether IBC should exit after failing second factor authentication.",
+      "internal": false
+    }
+  },
+  "TradingMode": {
+    "default": "paper",
+    "value": "paper",
+    "description": "Trading mode selection.",
+    "detailed_description": "Indicates whether to use the 'live' or 'paper' trading mode. Default is 'live', meaning real trading.",
+    "internal": false,
+    "select": [
+      "live",
+      "paper"
+    ]
+  },
+  "AcceptNonBrokerageAccountWarning": {
+    "default": "no",
+    "value": "yes",
+    "description": "Accept paper trading account warning.",
+    "detailed_description": "Automatically confirms the warning displayed when logging into a paper-trading account. Default is 'no'.",
+    "internal": false
+  },
+  "LoginDialogDisplayTimeout": {
+    "default": 60,
+    "value": "60",
+    "description": "Login dialog display timeout in seconds.",
+    "detailed_description": "Controls how long (in seconds) IBC waits for the TWS login dialog to appear before restarting TWS. Default is 60 seconds.",
+    "internal": false
+  },
+  "TWSStartupSettings": {
+    "IbDir": {
+      "default": "",
+      "value": "",
+      "description": "TWS settings directory.",
+      "detailed_description": "Path to the directory where TWS should store its settings. Typically this is the installation folder, but it can be customized.",
+      "internal": true
+    },
+    "StoreSettingsOnServer": {
+      "default": "",
+      "value": "",
+      "description": "Store TWS settings on IB's server.",
+      "detailed_description": "Allows TWS settings to be stored on Interactive Brokers' servers for consistency across multiple devices.",
+      "internal": false
+    },
+    "MinimizeMainWindow": {
+      "default": "no",
+      "value": "no",
+      "description": "Minimize TWS main window on startup.",
+      "detailed_description": "If set to 'yes', TWS will minimize its main window upon startup. Default is 'no'.",
+      "internal": false
+    },
+    "ExistingSessionDetectedAction": {
+      "default": "manual",
+      "value": "manual",
+      "description": "Action to take when an existing session is detected.",
+      "detailed_description": "Specifies what TWS should do if an existing session is already logged in. Options are 'manual', 'primary', 'primaryoverride', and 'secondary'. Default is 'manual'.",
+      "internal": false
+    },
+    "OverrideTwsApiPort": {
+      "default": "",
+      "value": "",
+      "description": "Override TWS API port number.",
+      "detailed_description": "Changes the socket port in TWS's API configuration at runtime, only for advanced users. Leave empty to retain the current setting.",
+      "internal": false
+    },
+    "OverrideTwsMasterClientID": {
+      "default": "",
+      "value": "",
+      "description": "Override TWS Master Client ID.",
+      "detailed_description": "Sets the Master Client ID in TWS API configuration. This setting is usually not required.",
+      "internal": false
+    },
+    "ReadOnlyLogin": {
+      "default": "yes",
+      "value": "",
+      "description": "Enable read-only login.",
+      "detailed_description": "Automatically logs into TWS in read-only mode, where placing or managing orders is not allowed. Default is 'yes'.",
+      "internal": false
+    },
+    "ReadOnlyApi": {
+      "default": "yes",
+      "value": "",
+      "description": "Enable read-only API.",
+      "detailed_description": "When enabled, API programs cannot submit, modify, or cancel orders. Default is 'yes'.",
+      "internal": false
+    }
+  },
+  "TWSIndianVersionSettings": {
+    "DismissPasswordExpiryWarning": {
+      "default": "no",
+      "value": "",
+      "description": "Dismiss password expiry warning.",
+      "detailed_description": "When set to 'yes', TWS will automatically dismiss the password expiry warning. Default is 'no'.",
+      "internal": false
+    },
+    "DismissNSEComplianceNotice": {
+      "default": "yes",
+      "value": "yes",
+      "description": "Dismiss NSE Compliance Notice.",
+      "detailed_description": "Automatically dismisses the NSE Compliance Notice for Indian versions of TWS. Default is 'yes'.",
+      "internal": false
+    }
+  },
+  "IBCCommandServerSettings": {
+    "CommandServerPort": {
+      "default": 0,
+      "value": "",
+      "description": "IBC command server port number.",
+      "detailed_description": "The port on which the IBC command server listens for commands. Default is 0, which disables the command server.",
+      "internal": false
+    },
+    "ControlFrom": {
+      "default": "",
+      "value": "",
+      "description": "Allowed command source IPs.",
+      "detailed_description": "Comma-separated list of IP addresses allowed to send commands to IBC. Default allows commands from the local host.",
+      "internal": false
+    }
+  },
+  "DiagnosticSettings": {
+    "LogStructureScope": {
+      "default": "known",
+      "value": "known",
+      "description": "Scope of structure logging.",
+      "detailed_description": "Defines which TWS windows are eligible for structure logging. Options are 'known', 'unknown', 'untitled', or 'all'. Default is 'known'.",
+      "internal": false
+    },
+    "LogStructureWhen": {
+      "default": "never",
+      "value": "never",
+      "description": "When to log window structure.",
+      "detailed_description": "Specifies the circumstances under which window structure is logged. Options are 'open', 'openclose', 'activate', and 'never'. Default is 'never'.",
+      "internal": false
+    }
+  }
+}

@@ -1,0 +1,140 @@
+2024-09-27 12:02:03 - Starting configure_ibc script
+2024-09-27 12:02:03 - IBconfig.json file not found at /home/lohan/Projects/Trading/_IBAlgo/modules/ibc_source/scripts/IBconfig.json
+2024-09-27 12:02:03 - Exiting configure_ibc script
+2024-09-27 12:02:03 - Exiting configure_ibc script
+2024-09-27 13:42:59 - Starting configure_ibc script
+2024-09-27 13:42:59 - Loading configuration from /home/lohan/Projects/Trading/_IBAlgo/modules/ibc_source/IBconfig.json
+2024-09-27 13:42:59 - Configuration title: IB Connector
+2024-09-27 13:42:59 - Parsing JSON at depth 0 with parent_key ''
+2024-09-27 13:42:59 - Data type: object
+2024-09-27 13:42:59 - Sorted keys: AcceptNonBrokerageAccountWarning FIX LoginDialogDisplayTimeout TradingMode AuthenticationSettings DiagnosticSettings IBCCommandServerSettings TWSIndianVersionSettings TWSStartupSettings
+2024-09-27 13:42:59 - Processing key 'AcceptNonBrokerageAccountWarning'
+2024-09-27 13:42:59 - Value type: object
+2024-09-27 13:42:59 - Registered setting 'AcceptNonBrokerageAccountWarning'
+2024-09-27 13:42:59 - Processing key 'FIX'
+2024-09-27 13:42:59 - Value type: object
+2024-09-27 13:42:59 - Registered setting 'FIX'
+2024-09-27 13:42:59 - Processing key 'LoginDialogDisplayTimeout'
+2024-09-27 13:42:59 - Value type: object
+2024-09-27 13:42:59 - Registered setting 'LoginDialogDisplayTimeout'
+2024-09-27 13:42:59 - Processing key 'TradingMode'
+2024-09-27 13:42:59 - Value type: object
+2024-09-27 13:42:59 - Registered setting 'TradingMode'
+2024-09-27 13:42:59 - Processing key 'AuthenticationSettings'
+2024-09-27 13:42:59 - Value type: object
+2024-09-27 13:42:59 - Registered family 'AuthenticationSettings'
+2024-09-27 13:42:59 - Parsing JSON at depth 1 with parent_key 'AuthenticationSettings.'
+2024-09-27 13:42:59 - Data type: object
+2024-09-27 13:42:59 - Sorted keys: ExitAfterSecondFactorAuthenticationTimeout FIXLoginId FIXPassword IbLoginId IbPassword ReloginAfterSecondFactorAuthenticationTimeout SecondFactorAuthenticationTimeout SecondFactorDevice
+2024-09-27 13:42:59 - Processing key 'AuthenticationSettings.ExitAfterSecondFactorAuthenticationTimeout'
+2024-09-27 13:42:59 - Value type: object
+2024-09-27 13:42:59 - Registered setting 'AuthenticationSettings.ExitAfterSecondFactorAuthenticationTimeout'
+2024-09-27 13:42:59 - Processing key 'AuthenticationSettings.FIXLoginId'
+2024-09-27 13:42:59 - Value type: object
+2024-09-27 13:42:59 - Registered setting 'AuthenticationSettings.FIXLoginId'
+2024-09-27 13:42:59 - Processing key 'AuthenticationSettings.FIXPassword'
+2024-09-27 13:42:59 - Value type: object
+2024-09-27 13:42:59 - Registered setting 'AuthenticationSettings.FIXPassword'
+2024-09-27 13:42:59 - Processing key 'AuthenticationSettings.IbLoginId'
+2024-09-27 13:42:59 - Value type: object
+2024-09-27 13:43:00 - Registered setting 'AuthenticationSettings.IbLoginId'
+2024-09-27 13:43:00 - Processing key 'AuthenticationSettings.IbPassword'
+2024-09-27 13:43:00 - Value type: object
+2024-09-27 13:43:00 - Registered setting 'AuthenticationSettings.IbPassword'
+2024-09-27 13:43:00 - Processing key 'AuthenticationSettings.ReloginAfterSecondFactorAuthenticationTimeout'
+2024-09-27 13:43:00 - Value type: object
+2024-09-27 13:43:00 - Registered setting 'AuthenticationSettings.ReloginAfterSecondFactorAuthenticationTimeout'
+2024-09-27 13:43:00 - Processing key 'AuthenticationSettings.SecondFactorAuthenticationTimeout'
+2024-09-27 13:43:00 - Value type: object
+2024-09-27 13:43:00 - Registered setting 'AuthenticationSettings.SecondFactorAuthenticationTimeout'
+2024-09-27 13:43:00 - Processing key 'AuthenticationSettings.SecondFactorDevice'
+2024-09-27 13:43:00 - Value type: object
+2024-09-27 13:43:00 - Registered setting 'AuthenticationSettings.SecondFactorDevice'
+2024-09-27 13:43:00 - Processing key 'DiagnosticSettings'
+2024-09-27 13:43:00 - Value type: object
+2024-09-27 13:43:00 - Registered family 'DiagnosticSettings'
+2024-09-27 13:43:00 - Parsing JSON at depth 1 with parent_key 'DiagnosticSettings.'
+2024-09-27 13:43:00 - Data type: object
+2024-09-27 13:43:00 - Sorted keys: LogStructureScope LogStructureWhen
+2024-09-27 13:43:00 - Processing key 'DiagnosticSettings.LogStructureScope'
+2024-09-27 13:43:00 - Value type: object
+2024-09-27 13:43:00 - Registered setting 'DiagnosticSettings.LogStructureScope'
+2024-09-27 13:43:00 - Processing key 'DiagnosticSettings.LogStructureWhen'
+2024-09-27 13:43:00 - Value type: object
+2024-09-27 13:43:00 - Registered setting 'DiagnosticSettings.LogStructureWhen'
+2024-09-27 13:43:00 - Processing key 'IBCCommandServerSettings'
+2024-09-27 13:43:00 - Value type: object
+2024-09-27 13:43:00 - Registered family 'IBCCommandServerSettings'
+2024-09-27 13:43:00 - Parsing JSON at depth 1 with parent_key 'IBCCommandServerSettings.'
+2024-09-27 13:43:00 - Data type: object
+2024-09-27 13:43:00 - Sorted keys: CommandServerPort ControlFrom
+2024-09-27 13:43:00 - Processing key 'IBCCommandServerSettings.CommandServerPort'
+2024-09-27 13:43:00 - Value type: object
+2024-09-27 13:43:00 - Registered setting 'IBCCommandServerSettings.CommandServerPort'
+2024-09-27 13:43:00 - Processing key 'IBCCommandServerSettings.ControlFrom'
+2024-09-27 13:43:00 - Value type: object
+2024-09-27 13:43:00 - Registered setting 'IBCCommandServerSettings.ControlFrom'
+2024-09-27 13:43:00 - Processing key 'TWSIndianVersionSettings'
+2024-09-27 13:43:00 - Value type: object
+2024-09-27 13:43:00 - Registered family 'TWSIndianVersionSettings'
+2024-09-27 13:43:00 - Parsing JSON at depth 1 with parent_key 'TWSIndianVersionSettings.'
+2024-09-27 13:43:00 - Data type: object
+2024-09-27 13:43:00 - Sorted keys: DismissNSEComplianceNotice DismissPasswordExpiryWarning
+2024-09-27 13:43:00 - Processing key 'TWSIndianVersionSettings.DismissNSEComplianceNotice'
+2024-09-27 13:43:00 - Value type: object
+2024-09-27 13:43:00 - Registered setting 'TWSIndianVersionSettings.DismissNSEComplianceNotice'
+2024-09-27 13:43:00 - Processing key 'TWSIndianVersionSettings.DismissPasswordExpiryWarning'
+2024-09-27 13:43:00 - Value type: object
+2024-09-27 13:43:00 - Registered setting 'TWSIndianVersionSettings.DismissPasswordExpiryWarning'
+2024-09-27 13:43:00 - Processing key 'TWSStartupSettings'
+2024-09-27 13:43:00 - Value type: object
+2024-09-27 13:43:00 - Registered family 'TWSStartupSettings'
+2024-09-27 13:43:00 - Parsing JSON at depth 1 with parent_key 'TWSStartupSettings.'
+2024-09-27 13:43:00 - Data type: object
+2024-09-27 13:43:00 - Sorted keys: ExistingSessionDetectedAction IbDir MinimizeMainWindow OverrideTwsApiPort OverrideTwsMasterClientID ReadOnlyApi ReadOnlyLogin StoreSettingsOnServer
+2024-09-27 13:43:00 - Processing key 'TWSStartupSettings.ExistingSessionDetectedAction'
+2024-09-27 13:43:00 - Value type: object
+2024-09-27 13:43:00 - Registered setting 'TWSStartupSettings.ExistingSessionDetectedAction'
+2024-09-27 13:43:00 - Processing key 'TWSStartupSettings.IbDir'
+2024-09-27 13:43:00 - Value type: object
+2024-09-27 13:43:00 - Registered setting 'TWSStartupSettings.IbDir'
+2024-09-27 13:43:00 - Processing key 'TWSStartupSettings.MinimizeMainWindow'
+2024-09-27 13:43:00 - Value type: object
+2024-09-27 13:43:00 - Registered setting 'TWSStartupSettings.MinimizeMainWindow'
+2024-09-27 13:43:00 - Processing key 'TWSStartupSettings.OverrideTwsApiPort'
+2024-09-27 13:43:00 - Value type: object
+2024-09-27 13:43:00 - Registered setting 'TWSStartupSettings.OverrideTwsApiPort'
+2024-09-27 13:43:00 - Processing key 'TWSStartupSettings.OverrideTwsMasterClientID'
+2024-09-27 13:43:00 - Value type: object
+2024-09-27 13:43:00 - Registered setting 'TWSStartupSettings.OverrideTwsMasterClientID'
+2024-09-27 13:43:00 - Processing key 'TWSStartupSettings.ReadOnlyApi'
+2024-09-27 13:43:00 - Value type: object
+2024-09-27 13:43:00 - Registered setting 'TWSStartupSettings.ReadOnlyApi'
+2024-09-27 13:43:00 - Processing key 'TWSStartupSettings.ReadOnlyLogin'
+2024-09-27 13:43:00 - Value type: object
+2024-09-27 13:43:00 - Registered setting 'TWSStartupSettings.ReadOnlyLogin'
+2024-09-27 13:43:00 - Processing key 'TWSStartupSettings.StoreSettingsOnServer'
+2024-09-27 13:43:00 - Value type: object
+2024-09-27 13:43:00 - Registered setting 'TWSStartupSettings.StoreSettingsOnServer'
+2024-09-27 13:43:00 - Finished JSON parsing
+2024-09-27 13:43:11 - Updated configuration for 'AcceptNonBrokerageAccountWarning' to 'no'
+2024-09-27 13:43:13 - Updated configuration for 'AcceptNonBrokerageAccountWarning' to 'yes'
+2024-09-27 13:43:15 - Updated configuration for 'FIX' to 'no'
+2024-09-27 13:43:24 - Updated configuration for 'LoginDialogDisplayTimeout' to '60'
+2024-09-27 13:43:25 - Updated configuration for 'TradingMode' to 'paper'
+2024-09-27 13:43:26 - Expanded family 'AuthenticationSettings'
+2024-09-27 13:43:27 - Collapsed family 'AuthenticationSettings'
+2024-09-27 13:43:28 - Expanded family 'AuthenticationSettings'
+./configure.sh: line 1130: ...: command not found
+./configure.sh: line 1130: ...: command not found
+2024-09-27 13:43:39 - Updated configuration for 'AuthenticationSettings.FIXPassword' to ''
+2024-09-27 13:43:43 - Updated configuration for 'AuthenticationSettings.FIXLoginId' to 'sartlo269'
+2024-09-27 13:44:13 - Updated configuration for 'AuthenticationSettings.FIXLoginId' to 'sartlo269'
+2024-09-27 13:44:15 - Updated configuration for 'AuthenticationSettings.FIXLoginId' to 'sartlo269'
+2024-09-27 13:44:16 - Updated configuration for 'AuthenticationSettings.FIXLoginId' to 'sartlo269'
+2024-09-27 13:44:18 - Updated configuration for 'AuthenticationSettings.FIXLoginId' to 'sartlo269'
+2024-09-27 16:46:19 - User pressed Ctrl+D to quit
+2024-09-27 16:46:19 - Configuration saved to '/home/lohan/Projects/Trading/_IBAlgo/modules/ibc_source/IBconfig.json'
+2024-09-27 16:46:19 - Exiting configure_ibc script
+2024-09-27 16:46:19 - Configuration saved to '/home/lohan/Projects/Trading/_IBAlgo/modules/ibc_source/IBconfig.json'
+2024-09-27 16:46:19 - Exiting configure_ibc script
