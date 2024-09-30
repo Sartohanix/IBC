@@ -1,16 +1,46 @@
 #!/bin/bash
 
-# TMP
-g_path="/home/lohan/IBAlgo"
-l_dir="/home/lohan/IBAlgo/modules/ibc"
+#########################################
+#                                       #
+#    Generate the IBC.ini config file   #
+#                                       #
+#########################################
 
 
-# TODO
-mode='PAPER'
-autorestart_option=
-twofa_to_action_upper="EXIT" # RESTART or EXIT
-ib_user_id="sartlo269"
-ib_password="LOLOps33!"
+json_file="$l_dir/IBconfig.json"
+# Check if the JSON file exists
+if [ ! -f "$json_file" ]; then
+	echo "Error: IBC JSON config file not found at $json_file"
+	exit 1
+fi
+
+# Process the JSON and write to IBC.ini
+ini_file="$l_dir/IBconfig.ini"
+
+# Use jq to extract setting-value pairs
+jq -r '
+  def extract_pairs:
+    to_entries
+    | map(
+        if .value | type == "object" and has("value") then
+          "\(.key)=\(.value.value)"
+        elif .value | type == "object" or type == "array" then
+          .value | extract_pairs
+        else
+          empty
+        end
+      )
+    | .[];
+
+  extract_pairs
+' "$json_file" > "$ini_file"
+
+# Check proper generation of .ini file
+if [ ! -f "$ini_file" ]; then
+	echo "Error: $ini_file file not generated properly."
+	exit 1
+fi
+
 
 #########################################
 #                                       #
@@ -24,7 +54,8 @@ entry_point=ibcalpha.ibc.IbcGateway
 
 ibg_path="$g_path/modules/ibg"
 tws_settings_path="$ibg_path/Jts"
-ibc_ini="$l_dir/config.ini"
+	mkdir -p "$tws_settings_path" # Make sure the settings dir exists
+ibc_ini="$l_dir/IBconfig.ini"
 
 java_path="$ibg_path/jre/bin"
 jars="$ibg_path/jars"
@@ -164,16 +195,19 @@ pushd "$tws_settings_path" > /dev/null
 # Renaming IB's TWS or Gateway start script to prevent restart without IBC
 if [[ -e "${ibg_path}/ibgateway" ]]; then mv "${ibg_path}/ibgateway" "${ibg_path}/ibgateway1"; fi
 
+command="\"$java_path/java\" -cp \"$ibc_classpath\" \"$java_vm_options\"\"$autorestart_option\" $entry_point \"$ibc_ini\" \"$ib_user_id\" \"$ib_password\" ${mode} &"
 
 while :; do
 	echo "Starting $program with this command:"
-	echo -e "\"$java_path/java\" -cp \"$ibc_classpath\" $java_vm_options$autorestart_option $entry_point \"$ibc_ini\" $hidden_credentials ${mode}"
+
+	echo $command
 	echo
 
 	# forward signals (see https://veithen.github.io/2014/11/16/sigterm-propagation.html)
 	trap 'kill -TERM $PID' TERM INT
 
-	"$java_path/java" -cp "$ibc_classpath" $java_vm_options$autorestart_option $entry_point "$ibc_ini" "$ib_user_id" "$ib_password" ${mode} &
+	"$java_path/java" -cp "$ibc_classpath" $java_vm_options$autorestart_option $entry_point $ibc_ini $ib_user_id $ib_password ${mode} &
+	# eval "$command"
 
 	PID=$!
 	wait $PID

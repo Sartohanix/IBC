@@ -1,4 +1,6 @@
 <project name="IBC" default="clean" basedir=".">
+    <echo message="[ANT DEBUG] Using Java version ${ant.java.version}."/>
+
     <property environment="env"/>
     <fail unless="env.IBC_BIN" message="Environment variable 'IBC_BIN' not set (set it to the fully-qualified directory name containing the TWS jar files)."/>
 
@@ -23,7 +25,7 @@ public class IbcVersionInfo {
 
     <target name="compile" depends="init" description="compile the source ">
         <mkdir dir="${target}/classes"/>
-        <javac srcdir="${src}" destdir="${target}/classes" includeantruntime="false">
+        <javac srcdir="${src}" destdir="${target}/classes" includeantruntime="false" [COMPILERVERSIONOPTIONS]>
             <classpath refid="external.classpath"/>
             <compilerarg value="-Xlint:all"/>
         </javac>

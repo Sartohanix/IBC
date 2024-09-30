@@ -17,6 +17,38 @@ build_ibc_from_source() {
     echo "--- Building IBC from source ... ---"
     echo
 
+    # Java compatibility handling
+    # Step 1: get ibg's embedded java version
+
+        local release_file="$g_path/modules/ibg/jre/release"
+        if [ ! -f "$release_file" ]; then
+            echo "ERROR: Java release file not found at $release_file"
+            return 1
+        fi
+
+        local java_version_line=$(grep "JAVA_VERSION=" "$release_file")
+        if [ -z "$java_version_line" ]; then
+            echo "ERROR: JAVA_VERSION not found in release file"
+            return 1
+        fi
+
+        local java_version
+        java_version=$(echo "$java_version_line" | cut -d'=' -f2 | tr -d '"' | sed -E 's/^([0-9]+\.[0-9]+).*/\1/')
+        if [ -z "$java_version" ]; then
+            echo "ERROR: Failed to extract JAVA_VERSION from release file"
+            return 1
+        fi
+
+        echo "(Detected Java version: $java_version. Updating the build.xml file.)"
+
+    # Step 2: Insert the version number in the build.xml file
+        sed -i "s/\[COMPILERVERSIONOPTIONS\]/source=\"$java_version\" target=\"$java_version\" compiler=\"javac$java_version\"/g" "$l_dir/build.xml"
+        if [ $? -ne 0 ]; then
+            echo "ERROR: Failed to update Java version in build.xml"
+            return 1
+        fi
+
+    # Now
     (cd "$l_dir"; export IBC_BIN="$g_path/modules/ibg/jars"; ant)
 
     # Check if the build was successful
@@ -24,6 +56,14 @@ build_ibc_from_source() {
         echo
         echo "ERROR: IBC build failed."
         echo
+
+
+            # Debug-print the whole content of $l_dir/build.xml file
+            echo "DEBUG: Content of $l_dir/build.xml:"
+            cat "$l_dir/build.xml"
+            echo "END OF DEBUG: $l_dir/build.xml content"
+
+
         return 1
     fi
 
