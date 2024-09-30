@@ -999,7 +999,7 @@ configure_ibc() {
         echo "Error: IBconfig.json file not found. Please repair IBC's installation and retry."
         log_debug "IBconfig.json file not found at $config_file_path"
         cleanup
-        return 1
+        return
     fi
 
     log_debug "Loading configuration from $config_file_path"
@@ -1134,26 +1134,25 @@ configure_ibc() {
                 # Quit
                 log_debug "User initiated quit"
                 cleanup
-                exit 0
+                break
                 ;;
             $'\x04')
                 # Ctrl+D
                 log_debug "User pressed Ctrl+D to quit"
                 cleanup
-                exit 0
+                break
                 ;;
             $'\x03')
                 # Ctrl+C
                 log_debug "User pressed Ctrl+C to quit"
                 cleanup
-                exit 0
+                break
                 ;;
             *)
                 # Handle other inputs
                 ;;
         esac
     done
-
 }
 
 # ---------------------------

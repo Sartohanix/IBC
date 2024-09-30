@@ -21,13 +21,42 @@ package ibcalpha.ibc;
 import static ibcalpha.ibc.IbcTws.checkArguments;
 import static ibcalpha.ibc.IbcTws.setupDefaultEnvironment;
 
+import java.io.Console;
+
 public class IbcGateway {
     public static void main(String[] args) throws Exception {
         if (Thread.getDefaultUncaughtExceptionHandler() == null) {
             Thread.setDefaultUncaughtExceptionHandler(new ibcalpha.ibc.UncaughtExceptionHandler());
         }
-        checkArguments(args);
-        setupDefaultEnvironment(args, true);
+        Console console = System.console();
+
+        if (console == null) {
+            System.err.println("No console available. Please run the application from the command line.");
+            System.exit(1);
+        }
+
+        // Check that args.length is either 1 or 2 and that argument 1 is a path pointing to an existing file
+        if (args.length != 1 && args.length != 2) {
+            System.err.println("Usage: java [args] <path_to_config_file> [trading_mode]");
+            System.exit(1);
+        }
+
+        // Prompt for username
+        String username = console.readLine("Enter username: ");
+
+        // Prompt for password (Input will not be echoed)
+        char[] passwordChars = console.readPassword("Enter password: ");
+        String password = new String(passwordChars);
+
+        // Re-build arguments
+        String[] newArgs;
+        if (args.length == 1) {
+            newArgs = new String[]{args[0], username, password};
+        } else {
+            newArgs = new String[]{args[0], username, password, args[1]};
+        }
+
+        setupDefaultEnvironment(newArgs, true);
         IbcTws.load();
     }
 

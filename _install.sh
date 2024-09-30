@@ -75,7 +75,7 @@ build_ibc_from_source() {
         read -rp "Open config editor now? [Y/n]: " choice
         case "$choice" in
             [Yy]* | "" )
-                echo "[DEBUG] Running configure.sh ...."
+                echo "[DEBUG] Running configure.sh ..."
 
                 source "$l_dir/scripts/configure.sh"
                 break
