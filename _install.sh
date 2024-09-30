@@ -17,12 +17,14 @@ build_ibc_from_source() {
     echo "--- Building IBC from source ... ---"
     echo
 
-    # Java compatibility handling
-    # Step 1: get ibg's embedded java version
+    local ibg_path="$g_path/modules/ibg"
 
-        local release_file="$g_path/modules/ibg/jre/release"
+    # Java compatibility handling
+    # Step 1: get ibg's embedded java version number
+
+        local release_file="$ibg_path/jre/release"
         if [ ! -f "$release_file" ]; then
-            echo "ERROR: Java release file not found at $release_file"
+            echo "ERROR: Java release file not found at $release_file."
             return 1
         fi
 
@@ -49,7 +51,7 @@ build_ibc_from_source() {
         fi
 
     # Now
-    (cd "$l_dir"; export IBC_BIN="$g_path/modules/ibg/jars"; ant)
+    (cd "$l_dir"; export IBC_BIN="$ibg_path/jars"; ant)
 
     # Check if the build was successful
     if [ ! -f "$l_dir/IBC.jar" ]; then
@@ -88,6 +90,9 @@ build_ibc_from_source() {
                 ;;
         esac
     done
+
+    # Install is now complete. The following is required by IBC's auto-restart feature
+    if [[ -e "${ibg_path}/ibgateway" ]]; then mv "${ibg_path}/ibgateway" "${ibg_path}/_ibgateway"; fi
 
     return 0
 }

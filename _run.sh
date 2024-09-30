@@ -1,5 +1,9 @@
 #!/bin/bash
 
+
+#################"""  TTTTTTTTTOOOOOOOOOOOODDDDDDDDDDOOOOOOOOOO "###############
+# DEPENDENCY PACKAGES : "libxtst6", "libxi6"
+
 #########################################
 #                                       #
 #    Generate the IBC.ini config file   #
@@ -187,63 +191,70 @@ find_auto_restart
 #                                      #
 ########################################
 
+run_ibg() {
+	while :; do
+		# forward signals (see https://veithen.github.io/2014/11/16/sigterm-propagation.html)
+		trap 'kill -TERM $PID' TERM INT
+
+		"$java_path/java" -cp "$ibc_classpath" $java_vm_options$autorestart_option $entry_point $ibc_ini ${mode} &
+
+		PID=$!
+		wait $PID
+		trap - TERM INT
+		wait $PID
+
+		exit_code=$(($? % 256))
+		echo "IBC returned exit status $exit_code"
+
+		if [[ $exit_code -eq $E_LOGIN_DIALOG_DISPLAY_TIMEOUT ]]; then
+			:
+		elif [[ -e "${tws_settings_path}/COLDRESTART$ibc_session_id" ]]; then
+			rm "${tws_settings_path}/COLDRESTART$ibc_session_id"
+			autorestart_option=
+			echo "IBC will cold-restart shortly"
+		else
+			find_auto_restart
+			if [[ -n $restarted_needed ]]; then
+				restarted_needed=
+				# restart using the TWS/Gateway-generated autorestart file
+				:
+			elif [[ $exit_code -ne $E_2FA_DIALOG_TIMED_OUT  ]]; then
+				break;
+			elif [[ ${twofa_to_action_upper} != "RESTART" ]]; then
+				break;
+			fi
+		fi
+
+		# wait a few seconds before restarting
+		echo "IBC will restart shortly"
+		echo sleep 2
+	done
+}
+
+# Global variable storing the xvfb display number
+_current_xvfb_display_=
+
+source "$l_dir/scripts/xvfb-functions.sh"
+
+start_xvfb
+
+# Set DISPLAY environment variable
+export DISPLAY=":$_current_xvfb_display_"
+
+echo "[DEBUG] DISPLAY was set to $DISPLAY"
+
 # prevent other Java tools interfering with IBC
+_JAVA_TOOL_OPTIONS=$JAVA_TOOL_OPTIONS
 JAVA_TOOL_OPTIONS=
 
 pushd "$tws_settings_path" > /dev/null
 
-# Renaming IB's TWS or Gateway start script to prevent restart without IBC
-if [[ -e "${ibg_path}/ibgateway" ]]; then mv "${ibg_path}/ibgateway" "${ibg_path}/ibgateway1"; fi
-
-command="\"$java_path/java\" -cp \"$ibc_classpath\" \"$java_vm_options\"\"$autorestart_option\" $entry_point \"$ibc_ini\" \"$ib_user_id\" \"$ib_password\" ${mode} &"
-
-while :; do
-	echo "Starting $program with this command:"
-
-	echo $command
-	echo
-
-	# forward signals (see https://veithen.github.io/2014/11/16/sigterm-propagation.html)
-	trap 'kill -TERM $PID' TERM INT
-
-	"$java_path/java" -cp "$ibc_classpath" $java_vm_options$autorestart_option $entry_point $ibc_ini $ib_user_id $ib_password ${mode} &
-	# eval "$command"
-
-	PID=$!
-	wait $PID
-	trap - TERM INT
-	wait $PID
-
-	exit_code=$(($? % 256))
-	echo "IBC returned exit status $exit_code"
-
-	if [[ $exit_code -eq $E_LOGIN_DIALOG_DISPLAY_TIMEOUT ]]; then
-		:
-	elif [[ -e "${tws_settings_path}/COLDRESTART$ibc_session_id" ]]; then
-		rm "${tws_settings_path}/COLDRESTART$ibc_session_id"
-		autorestart_option=
-		echo "IBC will cold-restart shortly"
-	else
-		find_auto_restart
-		if [[ -n $restarted_needed ]]; then
-			restarted_needed=
-			# restart using the TWS/Gateway-generated autorestart file
-			:
-		elif [[ $exit_code -ne $E_2FA_DIALOG_TIMED_OUT  ]]; then
-			break;
-		elif [[ ${twofa_to_action_upper} != "RESTART" ]]; then
-			break;
-		fi
-	fi
-
-	# wait a few seconds before restarting
-	echo "IBC will restart shortly"
-	echo sleep 2
-done
-
-echo "$program has properly shutdown"
-echo
+run_ibg
 
 popd > /dev/null
+
+JAVA_TOOL_OPTIONS=$_JAVA_TOOL_OPTIONS
+
+stop_xvfb $_current_xvfb_display_
 
 exit $exit_code
