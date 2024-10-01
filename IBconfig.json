@@ -24,7 +24,7 @@
     },
     "FIXLoginId": {
       "default": "",
-      "value": "sartlo269",
+      "value": "",
       "description": "FIX CTCI username.",
       "detailed_description": "This field is for the username required for logging into the FIX CTCI gateway, if applicable.",
       "internal": true
@@ -59,7 +59,7 @@
     },
     "ExitAfterSecondFactorAuthenticationTimeout": {
       "default": "no",
-      "value": "no",
+      "value": "",
       "description": "Exit after second factor authentication timeout.",
       "detailed_description": "Deprecated setting. Determines whether IBC should exit after failing second factor authentication.",
       "internal": false
@@ -67,7 +67,7 @@
   },
   "TradingMode": {
     "default": "paper",
-    "value": "paper",
+    "value": "",
     "description": "Trading mode selection.",
     "detailed_description": "Indicates whether to use the 'live' or 'paper' trading mode. Default is 'live', meaning real trading.",
     "internal": false,
@@ -78,14 +78,14 @@
   },
   "AcceptNonBrokerageAccountWarning": {
     "default": "no",
-    "value": "yes",
+    "value": "",
     "description": "Accept paper trading account warning.",
     "detailed_description": "Automatically confirms the warning displayed when logging into a paper-trading account. Default is 'no'.",
     "internal": false
   },
   "LoginDialogDisplayTimeout": {
     "default": 60,
-    "value": "60",
+    "value": "",
     "description": "Login dialog display timeout in seconds.",
     "detailed_description": "Controls how long (in seconds) IBC waits for the TWS login dialog to appear before restarting TWS. Default is 60 seconds.",
     "internal": false
@@ -114,7 +114,7 @@
     },
     "ExistingSessionDetectedAction": {
       "default": "manual",
-      "value": "manual",
+      "value": "",
       "description": "Action to take when an existing session is detected.",
       "detailed_description": "Specifies what TWS should do if an existing session is already logged in. Options are 'manual', 'primary', 'primaryoverride', and 'secondary'. Default is 'manual'.",
       "internal": false
@@ -124,6 +124,13 @@
       "value": "",
       "description": "Override TWS API port number.",
       "detailed_description": "Changes the socket port in TWS's API configuration at runtime, only for advanced users. Leave empty to retain the current setting.",
+      "internal": false
+    },
+	"TrustedTwsApiClientIPs": {
+      "default": "127.0.0.1",
+      "value": "",
+      "description": "Define the list of trusted IPs",
+      "detailed_description": "Trusted IPs will be able to connect to the TWS API",
       "internal": false
     },
     "OverrideTwsMasterClientID": {
@@ -158,7 +165,7 @@
     },
     "DismissNSEComplianceNotice": {
       "default": "yes",
-      "value": "yes",
+      "value": "",
       "description": "Dismiss NSE Compliance Notice.",
       "detailed_description": "Automatically dismisses the NSE Compliance Notice for Indian versions of TWS. Default is 'yes'.",
       "internal": false
@@ -166,10 +173,10 @@
   },
   "IBCCommandServerSettings": {
     "CommandServerPort": {
-      "default": 7462,
+      "default": 7320,
       "value": "",
       "description": "IBC command server port number.",
-      "detailed_description": "The port on which the IBC command server listens for commands. Default is 7462.",
+      "detailed_description": "The port on which the IBC command server listens for commands. Default is 7320.",
       "internal": false
     },
     "ControlFrom": {
@@ -183,14 +190,14 @@
   "DiagnosticSettings": {
     "LogStructureScope": {
       "default": "known",
-      "value": "known",
+      "value": "",
       "description": "Scope of structure logging.",
       "detailed_description": "Defines which TWS windows are eligible for structure logging. Options are 'known', 'unknown', 'untitled', or 'all'. Default is 'known'.",
       "internal": false
     },
     "LogStructureWhen": {
       "default": "never",
-      "value": "never",
+      "value": "",
       "description": "When to log window structure.",
       "detailed_description": "Specifies the circumstances under which window structure is logged. Options are 'open', 'openclose', 'activate', and 'never'. Default is 'never'.",
       "internal": false

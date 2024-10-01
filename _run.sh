@@ -1,6 +1,45 @@
 #!/bin/bash
 
 
+# Port forwarding tests
+
+
+LOGFILE="$l_dir/socat_forwarding.log"
+
+# Function to start socat bidirectional forwarding
+start_forwarding() {
+    echo "Starting bidirectional forwarding..." | tee -a "$LOGFILE"
+
+    # Forward communication from client (port 7321) to TWS/IBG (port 4002)
+    socat TCP-LISTEN:7321,reuseaddr,fork SYSTEM:"tee -a $LOGFILE | socat - TCP:localhost:4002" &
+
+    # Forward communication from TWS/IBG (port 4002) back to client (port 7321)
+    socat TCP-LISTEN:4002,reuseaddr,fork SYSTEM:"tee -a $LOGFILE | socat - TCP:localhost:7321" &
+
+    # Save the PIDs of both socat processes
+    SOCAT_PID1=$!
+    SOCAT_PID2=$!
+
+    echo "Forwarding started. Socat PIDs: $SOCAT_PID1, $SOCAT_PID2" | tee -a "$LOGFILE"
+}
+
+# Function to stop socat bidirectional forwarding
+stop_forwarding() {
+    echo "Stopping bidirectional forwarding..." | tee -a "$LOGFILE"
+
+    # Kill the socat processes by their PIDs
+    kill $SOCAT_PID1 $SOCAT_PID2
+
+    if [ $? -eq 0 ]; then
+        echo "Socat forwarding successfully stopped." | tee -a "$LOGFILE"
+    else
+        echo "Failed to stop socat forwarding." | tee -a "$LOGFILE"
+    fi
+}
+
+
+
+
 #################"""  TTTTTTTTTOOOOOOOOOOOODDDDDDDDDDOOOOOOOOOO "###############
 # DEPENDENCY PACKAGES : "libxtst6", "libxi6"
 
@@ -233,14 +272,9 @@ run_ibg() {
 
 # Global variable storing the xvfb display number
 _current_xvfb_display_=
-
 source "$l_dir/scripts/xvfb-functions.sh"
-
 start_xvfb
-
-# Set DISPLAY environment variable
 export DISPLAY=":$_current_xvfb_display_"
-
 echo "[DEBUG] DISPLAY was set to $DISPLAY"
 
 # prevent other Java tools interfering with IBC
@@ -249,7 +283,14 @@ JAVA_TOOL_OPTIONS=
 
 pushd "$tws_settings_path" > /dev/null
 
+# Trap the server shutdown (SIGINT, SIGTERM) and clean up
+trap "stop_forwarding" SIGINT SIGTERM
+
+start_forwarding
+
 run_ibg
+
+stop_forwarding
 
 popd > /dev/null
 
