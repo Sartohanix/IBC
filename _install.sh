@@ -45,6 +45,11 @@ build_ibc_from_source() {
 
     # Step 2: Insert the version number in the build.xml file
         sed -i "s/\[COMPILERVERSIONOPTIONS\]/source=\"$java_version\" target=\"$java_version\" compiler=\"javac$java_version\"/g" "$l_dir/build.xml"
+
+        echo "[DEBUG] Version build string:"
+        echo "source=\"$java_version\" target=\"$java_version\" compiler=\"javac$java_version\""
+        echo
+
         if [ $? -ne 0 ]; then
             echo "ERROR: Failed to update Java version in build.xml"
             return 1
@@ -72,24 +77,39 @@ build_ibc_from_source() {
     # Remove build files
     rm -rf "$l_dir/src" "$l_dir/build.xml" "$l_dir/README.md" "$l_dir/LICENSE"
 
-    # Configure now ?
-    while true; do
-        read -rp "Open config editor now? [Y/n]: " choice
-        case "$choice" in
-            [Yy]* | "" )
-                echo "[DEBUG] Running configure.sh ..."
+    # # Configure now ?
+    # while true; do
+    #     read -rp "Open config editor now? [Y/n]: " choice
+    #     case "$choice" in
+    #         [Yy]* | "" )
+    #             echo "[DEBUG] Running configure.sh ..."
 
-                source "$l_dir/scripts/configure.sh"
-                break
-                ;;
-            [Nn]* )
-                break
-                ;;
-            * )
-                echo "Error: Invalid input. Please enter 'y' for yes or 'n' for no."
-                ;;
-        esac
-    done
+    #             source "$l_dir/scripts/configure.sh"
+    #             break
+    #             ;;
+    #         [Nn]* )
+    #             break
+    #             ;;
+    #         * )
+    #             echo "Error: Invalid input. Please enter 'y' for yes or 'n' for no."
+    #             ;;
+    #     esac
+    # done
+
+
+    # Modify the JSON file to set "value" equal to "default" for relevant fields
+    if [ -f "$l_dir/IBconfig.json" ]; then
+        tmp_file=$(mktemp)
+
+        jq 'walk(if type == "object" and has("default") then .value = .default else . end)' "$l_dir/IBconfig.json" > "$tmp_file" && mv "$tmp_file" "$l_dir/IBconfig.json"
+        if [ $? -ne 0 ]; then
+            echo "ERROR: Failed to update IBconfig.json"
+            return 1
+        fi
+    else
+        echo "ERROR: IBconfig.json file not found"
+        return 1
+    fi
 
     # Install is now complete. The following is required by IBC's auto-restart feature
     if [[ -e "${ibg_path}/ibgateway" ]]; then mv "${ibg_path}/ibgateway" "${ibg_path}/_ibgateway"; fi

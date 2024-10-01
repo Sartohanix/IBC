@@ -1127,7 +1127,7 @@ configure_ibc() {
                 else
                     # Normal Escape key handling
                     # Implement existing behavior
-                    ...
+                    :
                 fi
                 ;;
             'q')

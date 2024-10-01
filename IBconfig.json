@@ -77,7 +77,7 @@
     ]
   },
   "AcceptNonBrokerageAccountWarning": {
-    "default": "no",
+    "default": "yes",
     "value": "",
     "description": "Accept paper trading account warning.",
     "detailed_description": "Automatically confirms the warning displayed when logging into a paper-trading account. Default is 'no'.",

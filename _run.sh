@@ -11,14 +11,12 @@ start_forwarding() {
     echo "Starting bidirectional forwarding..." | tee -a "$LOGFILE"
 
     # Forward communication from client (port 7321) to TWS/IBG (port 4002)
-    socat TCP-LISTEN:7321,reuseaddr,fork SYSTEM:"tee -a $LOGFILE | socat - TCP:localhost:4002" &
+	socat -v TCP-LISTEN:7321,reuseaddr,fork TCP:localhost:4002 2>>"$LOGFILE" &
+	SOCAT_PID1=$!
 
     # Forward communication from TWS/IBG (port 4002) back to client (port 7321)
-    socat TCP-LISTEN:4002,reuseaddr,fork SYSTEM:"tee -a $LOGFILE | socat - TCP:localhost:7321" &
-
-    # Save the PIDs of both socat processes
-    SOCAT_PID1=$!
-    SOCAT_PID2=$!
+	socat -v TCP-LISTEN:4002,reuseaddr,fork TCP:localhost:7321 2>>"$LOGFILE" &
+	SOCAT_PID2=$!
 
     echo "Forwarding started. Socat PIDs: $SOCAT_PID1, $SOCAT_PID2" | tee -a "$LOGFILE"
 }
@@ -28,12 +26,20 @@ stop_forwarding() {
     echo "Stopping bidirectional forwarding..." | tee -a "$LOGFILE"
 
     # Kill the socat processes by their PIDs
-    kill $SOCAT_PID1 $SOCAT_PID2
+    kill $SOCAT_PID1
 
     if [ $? -eq 0 ]; then
-        echo "Socat forwarding successfully stopped." | tee -a "$LOGFILE"
+        echo "Socat forwarding 1 successfully stopped." | tee -a "$LOGFILE"
     else
-        echo "Failed to stop socat forwarding." | tee -a "$LOGFILE"
+        echo "Failed to stop socat forwarding 1." | tee -a "$LOGFILE"
+    fi
+
+	kill $SOCAT_PID2
+
+    if [ $? -eq 0 ]; then
+        echo "Socat forwarding 2 successfully stopped." | tee -a "$LOGFILE"
+    else
+        echo "Failed to stop socat forwarding 2." | tee -a "$LOGFILE"
     fi
 }
 
@@ -160,6 +166,7 @@ java_vm_options="$java_vm_options -Dchannel=latest"
 java_vm_options="$java_vm_options -Dexe4j.isInstall4j=true"
 java_vm_options="$java_vm_options -Dinstall4jType=standalone"
 java_vm_options="$java_vm_options -DjtsConfigDir=${tws_settings_path}"
+java_vm_options="$java_vm_options -DinstallDir=${ibg_path}"
 
 ibc_session_id=$(mktemp -u XXXXXXXX)
 java_vm_options="$java_vm_options -Dibcsessionid=$ibc_session_id"
@@ -232,6 +239,7 @@ find_auto_restart
 
 run_ibg() {
 	while :; do
+		echo -e "\n\n\n\n\n -------------------------------------------- \n ---------- MAIN LOOP ---------- \n ---------------------------------------------------------- \n\n\n\n\n"
 		# forward signals (see https://veithen.github.io/2014/11/16/sigterm-propagation.html)
 		trap 'kill -TERM $PID' TERM INT
 
