@@ -18,6 +18,8 @@
 
 package ibcalpha.ibc;
 
+import java.util.Map;
+
 public abstract class Settings {
 
     private static Settings _settings;
@@ -37,6 +39,7 @@ public abstract class Settings {
 
     public abstract void logDiagnosticMessage();
 
+    public abstract Map<String, String> getAllSettings();
 
     /**
     returns the boolean value associated with property named key.

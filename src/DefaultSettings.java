@@ -24,6 +24,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 public class DefaultSettings extends Settings {
@@ -67,7 +69,7 @@ public class DefaultSettings extends Settings {
             Utils.logToConsole(e.toString());
         }
     }
-    
+
     private String getSettingSanitisedValue(String key) {
         if (key.equalsIgnoreCase("FIXLoginId") ||
                 key.equalsIgnoreCase("FIXPassword") ||
@@ -80,14 +82,14 @@ public class DefaultSettings extends Settings {
 
     static String generateDefaultIniPath() {
         if (System.getProperty("os.name").startsWith("Windows")) {
-            return System.getenv("HOMEDRIVE") + 
-                    System.getenv("HOMEPATH") + File.separator + 
-                    "Documents" + File.separator + 
-                    "IBC" + File.separator + 
+            return System.getenv("HOMEDRIVE") +
+                    System.getenv("HOMEPATH") + File.separator +
+                    "Documents" + File.separator +
+                    "IBC" + File.separator +
                     "config.ini";
         } else {
-            return System.getProperty("user.home") + File.separator + 
-                    "ibc" + File.separator + 
+            return System.getProperty("user.home") + File.separator +
+                    "ibc" + File.separator +
                     "config.ini";
         }
     }
@@ -140,14 +142,14 @@ public class DefaultSettings extends Settings {
     Returns defaultValue if no such property.
      * @param key
      * @param defaultValue
-     * @return 
+     * @return
      */
     @Override
     public String getString(String key,
                             String defaultValue) {
         String value = props.getProperty(key, defaultValue);
 
-        // handle key=[empty string] in .ini file 
+        // handle key=[empty string] in .ini file
         if (value.isEmpty()) {
             value = defaultValue;
         }
@@ -160,14 +162,14 @@ public class DefaultSettings extends Settings {
     or if the property value cannot be converted to an int.
      * @param key
      * @param defaultValue
-     * @return 
+     * @return
      */
     @Override
     public int getInt(String key,
                       int defaultValue) {
         String value = props.getProperty(key);
 
-        // handle key missing or key=[empty string] in .ini file 
+        // handle key missing or key=[empty string] in .ini file
         if (value == null || value.length() == 0) {
             return defaultValue;
         }
@@ -196,7 +198,7 @@ public class DefaultSettings extends Settings {
                         String defaultValue) {
         String value = props.getProperty(key, defaultValue);
 
-        // handle key missing or key=[empty string] in .ini file 
+        // handle key missing or key=[empty string] in .ini file
         if (value == null || value.length() == 0) {
             return defaultValue.charAt(0);
         }
@@ -219,14 +221,14 @@ public class DefaultSettings extends Settings {
     or if the property value cannot be converted to a double.
      * @param key
      * @param defaultValue
-     * @return 
+     * @return
      */
     @Override
     public double getDouble(String key,
                             double defaultValue) {
         String value = props.getProperty(key);
 
-        // handle key missing or key=[empty string] in .ini file 
+        // handle key missing or key=[empty string] in .ini file
         if (value == null || value.length() == 0) {
             return defaultValue;
         }
@@ -250,14 +252,14 @@ public class DefaultSettings extends Settings {
     or if the property value cannot be converted to a boolean.
      * @param key
      * @param defaultValue
-     * @return 
+     * @return
      */
     @Override
     public boolean getBoolean(String key,
                               boolean defaultValue) {
         String value = props.getProperty(key);
 
-        // handle key missing or key=[empty string] in .ini file 
+        // handle key missing or key=[empty string] in .ini file
         if (value == null || value.length() == 0) {
             return defaultValue;
         }
@@ -275,4 +277,20 @@ public class DefaultSettings extends Settings {
         }
     }
 
+    @Override
+    public Map<String, String> getAllSettings() {
+        Map<String, String> stringMap = new HashMap<>();
+        for (Map.Entry<Object, Object> entry : props.entrySet()) {
+            String key = entry.getKey().toString();
+            Object value = entry.getValue();
+            String stringValue;
+            if (value instanceof String[]) {
+                stringValue = String.join(", ", (String[]) value);
+            } else {
+                stringValue = String.valueOf(value);
+            }
+            stringMap.put(key, stringValue);
+        }
+        return stringMap;
+    }
 }
