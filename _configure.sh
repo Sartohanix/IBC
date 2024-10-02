@@ -311,6 +311,15 @@ build_menu_recursive() {
             name="${key##*.}"
         fi
 
+        # Skip internal settings
+        if [ "$type" = "setting" ]; then
+            local is_internal
+            is_internal=$(echo "$config_json" | jq -r "$(build_jq_filter "$key").internal // false")
+            if [ "$is_internal" = "true" ]; then
+                continue
+            fi
+        fi
+
         # Build the display line based on the type
         local display_line=""
         if [ "$type" = "family" ]; then
@@ -353,6 +362,15 @@ print_menu() {
 
         local type="${item_types[$key]}"
         local value=""
+
+        # Skip internal settings
+        if [ "$type" = "setting" ]; then
+            local is_internal
+            is_internal=$(echo "$config_json" | jq -r "$(build_jq_filter "$key").internal // false")
+            if [ "$is_internal" = "true" ]; then
+                continue
+            fi
+        fi
 
         if [ "$type" = "setting" ] && [ "$i" -eq "$focus_index" ]; then
             # Retrieve the current value with proper escaping

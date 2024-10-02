@@ -38,7 +38,7 @@ public class ConfigureResetOrderIdsTask implements ConfigurationAction {
     public void run() {
         try {
             if (!resetOrderIds) return;
-            
+
             Utils.logToConsole("Resetting API order ids");
 
             if (!SessionManager.isGateway()) {
@@ -48,7 +48,7 @@ public class ConfigureResetOrderIdsTask implements ConfigurationAction {
 
             Utils.selectApiSettings(configDialog);
 
-            if (!SwingUtils.clickButton(configDialog, "Reset API order ID sequence")) throw new IbcException("could not find 'Reset API order ID sequence' button"); 
+            if (!SwingUtils.clickButton(configDialog, "Reset API order ID sequence")) throw new IbcException("could not find 'Reset API order ID sequence' button");
         } catch (IbcException e) {
             Utils.logException(e);
         }

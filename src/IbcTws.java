@@ -378,6 +378,7 @@ public class IbcTws {
         }
 
         configureResetOrderIdsAtStart();
+        configureAllowConnections(JtsIniManager.allowIPs());
         configureApiPort();
         configureMasterClientID();
         configureReadOnlyApi();
@@ -387,8 +388,8 @@ public class IbcTws {
 
         Utils.sendConsoleOutputToTwsLog(!Settings.settings().getBoolean("LogToConsole", false));
 
-        mainLogReader = new MainLogReader();
-        mainLogReader.initialize();
+        // mainLogReader = new MainLogReader();
+        // mainLogReader.initialize();
     }
 
     private static void configureResetOrderIdsAtStart() {
@@ -457,6 +458,10 @@ public class IbcTws {
             }
             (new ConfigurationTask(new ConfigureReadOnlyApiTask(Settings.settings().getBoolean(configName,true)))).executeAsync();
         }
+    }
+
+    private static void configureAllowConnections(boolean allowIPsOtherThanLocalhost) {
+        (new ConfigurationTask(new ConfigureAllowConnections(!allowIPsOtherThanLocalhost))).executeAsync();
     }
 
     private static void configureSendMarketDataInLotsForUSstocks(){

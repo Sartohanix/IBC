@@ -31,11 +31,12 @@ public class MainLogReader {
 
     public void initialize() {
         logTextArea = null;
-        logfile = getTWSSettingsDirectory() + "/ibg.log";
+        logfile = Settings.settings().getString("IbDir", System.getProperty("user.dir")) + "/ibg.log";
 
         File file = new File(logfile);
         if (!file.exists()) {
             try {
+                System.out.println("\n\n[DEBUG] ----- Creating log file: " + logfile + "  ------\n\n");
                 file.createNewFile();
             } catch (IOException e) {
                 System.err.println("Debug: Error creating log file: " + e.getMessage());
@@ -52,6 +53,7 @@ public class MainLogReader {
             @Override
             public void run() {
                 if (logTextArea == null) {
+                    System.out.println("\n\n[DEBUG] ----- Looking for text area... ------\n\n");
                     findLogTextArea();
                 } else {
                     readAndAppendLog();
@@ -62,9 +64,19 @@ public class MainLogReader {
 
     private void findLogTextArea() {
         for (Window window : Window.getWindows()) {
-            if ("ibgateway.aC".equals(window.getClass().getName())) {
+            // if ("ibgateway.aC".equals(window.getClass().getName())) {
+            if (true) {
+                System.out.println("<<<<< Looking into window " + window.getClass().getName() + " ... >>>>>");
                 logTextArea = findLogTextArea(window);
-                break;
+                if (logTextArea != null) {
+                    System.out.println("\n\n[DEBUG] ----- Found logTextArea: " + logTextArea + "  ------\n\n");
+                    break;
+                }
+                else {
+                    System.out.println("\n\n[DEBUG] ----- DID NOT FIND logTextArea: " + logTextArea + "  ------\n\n");
+                    listOpenWindows();
+                    System.out.println("\n\n[DEBUG] ----- --------------------------------------  ------\n\n");
+                }
             }
         }
     }
@@ -123,7 +135,7 @@ public class MainLogReader {
                 return textArea;
             }
         }
-        // getComponentTree(tabbedPane);
+        getComponentTree(tabbedPane);
         return null;
     }
 
@@ -144,31 +156,45 @@ public class MainLogReader {
         return null;
     }
 
+    public static void listOpenWindows() {
+        Window[] windows = Window.getWindows(); // Get all currently open windows
 
-    // private void getComponentTree(Component component) {
-    //     StringBuilder builder = new StringBuilder();
-    //     traverseComponents(component, builder, 0);
-    //     System.out.println("\n\n\n\n\n" + builder.toString() + "\n\n\n\n\n");
-    // }
+        if (windows.length == 0) {
+            System.out.println("No open windows found.");
+        } else {
+            for (int i = 0; i < windows.length; i++) {
+                System.out.println("Window " + (i + 1) + ": " + windows[i].getClass().getName());
+            }
+        }
+    }
 
-    // private void traverseComponents(Component component, StringBuilder builder, int depth) {
-    //     // Indent based on the depth of the component
-    //     for (int i = 0; i < depth; i++) {
-    //         builder.append("  ");  // Indentation
-    //     }
+    private void getComponentTree(Component component) {
+        StringBuilder builder = new StringBuilder();
+        traverseComponents(component, builder, 0);
+        System.out.println("\n\n\n\n\n" + builder.toString() + "\n\n\n\n\n");
+    }
 
-    //     // Append the current component's class name
-    //     builder.append(component.getClass().getName()).append("\n---------------------\n");
-    //     if (component instanceof JTextComponent) {
-    //         builder.append(((JTextComponent) component).getText()).append("\n---------------------\n");
-    //     }
+    private void traverseComponents(Component component, StringBuilder builder, int depth) {
+        // Indent based on the depth of the component
+        for (int i = 0; i < depth; i++) {
+            builder.append("  ");  // Indentation
+        }
 
-    //     // If the component is a container, recursively traverse its children
-    //     if (component instanceof Container) {
-    //         Component[] children = ((Container) component).getComponents();
-    //         for (Component child : children) {
-    //             traverseComponents(child, builder, depth + 1);
-    //         }
-    //     }
-    // }
+        // Append the current component's class name
+        builder.append(component.getClass().getName()).append("\n---------------------\n");
+        if (component instanceof JTextComponent) {
+            builder.append(" Text = " + ((JTextComponent) component).getText()).append("\n---------------------\n");
+        }
+        else {
+            builder.append("Class Name = " + component.getClass().getName()).append("\n---------------------\n");
+        }
+
+        // If the component is a container, recursively traverse its children
+        if (component instanceof Container) {
+            Component[] children = ((Container) component).getComponents();
+            for (Component child : children) {
+                traverseComponents(child, builder, depth + 1);
+            }
+        }
+    }
  }

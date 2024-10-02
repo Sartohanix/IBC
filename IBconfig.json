@@ -2,10 +2,10 @@
   "_title": "IB Connector",
   "FIX": {
     "default": "no",
-    "value": "no",
+    "value": "",
     "description": "Starts the FIX CTCI gateway.",
     "detailed_description": "Setting this to 'yes' starts the FIX CTCI gateway used for order routing. The default is 'no'.",
-    "internal": true
+    "internal": false
   },
   "AuthenticationSettings": {
     "IbLoginId": {
@@ -15,26 +15,21 @@
       "detailed_description": "Your TWS username, used for logging into Trader Workstation or IB Gateway.",
       "internal": false
     },
-    "IbPassword": {
-      "default": "",
-      "value": "",
-      "description": "TWS/IBG password.",
-      "detailed_description": "Your TWS password, used for secure authentication to the Trader Workstation or IB Gateway.",
-      "internal": true
-    },
     "FIXLoginId": {
       "default": "",
       "value": "",
       "description": "FIX CTCI username.",
       "detailed_description": "This field is for the username required for logging into the FIX CTCI gateway, if applicable.",
-      "internal": true
+      "internal": false,
+      "condition": "FIX.value=='yes'"
     },
     "FIXPassword": {
       "default": "",
       "value": "",
       "description": "FIX CTCI password.",
       "detailed_description": "The password for logging into the FIX CTCI gateway, used for secure authentication.",
-      "internal": true
+      "internal": false,
+      "condition": "FIX.value=='yes'"
     },
     "SecondFactorDevice": {
       "default": "",
@@ -92,7 +87,7 @@
   },
   "TWSStartupSettings": {
     "IbDir": {
-      "default": "",
+      "default": "$tws_settings_path",
       "value": "",
       "description": "TWS settings directory.",
       "detailed_description": "Path to the directory where TWS should store its settings. Typically this is the installation folder, but it can be customized.",
@@ -127,7 +122,7 @@
       "internal": false
     },
 	"TrustedTwsApiClientIPs": {
-      "default": "127.0.0.1",
+      "default": "",
       "value": "",
       "description": "Define the list of trusted IPs",
       "detailed_description": "Trusted IPs will be able to connect to the TWS API",
