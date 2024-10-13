@@ -33,46 +33,6 @@ let E_2FA_DIALOG_TIMED_OUT=$((1111 % 256))
 E_LOGIN_DIALOG_DISPLAY_TIMEOUT=$((1112 % 256))
 
 
-# Port forwarding tests
-LOGFILE="$l_dir/socat_forwarding.log"
-
-# Function to start socat bidirectional forwarding
-start_forwarding() {
-    echo "Starting bidirectional forwarding..." | tee -a "$LOGFILE"
-
-    # Forward communication from client (port 7321) to TWS/IBG (port 4002)
-	socat -v TCP-LISTEN:7321,reuseaddr,fork TCP:localhost:4002 2>>"$LOGFILE" &
-	SOCAT_PID1=$!
-
-    # Forward communication from TWS/IBG (port 4002) back to client (port 7321)
-	socat -v TCP-LISTEN:4002,reuseaddr,fork TCP:localhost:7321 2>>"$LOGFILE" &
-	SOCAT_PID2=$!
-
-    echo "Forwarding started. Socat PIDs: $SOCAT_PID1, $SOCAT_PID2" | tee -a "$LOGFILE"
-}
-
-# Function to stop socat bidirectional forwarding
-stop_forwarding() {
-    echo "Stopping bidirectional forwarding..." | tee -a "$LOGFILE"
-
-    # Kill the socat processes by their PIDs
-    kill $SOCAT_PID1
-
-    if [ $? -eq 0 ]; then
-        echo "Socat forwarding 1 successfully stopped." | tee -a "$LOGFILE"
-    else
-        echo "Failed to stop socat forwarding 1." | tee -a "$LOGFILE"
-    fi
-
-	kill $SOCAT_PID2
-
-    if [ $? -eq 0 ]; then
-        echo "Socat forwarding 2 successfully stopped." | tee -a "$LOGFILE"
-    else
-        echo "Failed to stop socat forwarding 2." | tee -a "$LOGFILE"
-    fi
-}
-
 generate_ini() {
 	#########################################
 	#                                       #
@@ -305,14 +265,7 @@ run_ibg() {
 
 	pushd "$tws_settings_path" > /dev/null
 
-	# Trap the server shutdown (SIGINT, SIGTERM) and clean up
-	# trap "stop_forwarding" SIGINT SIGTERM
-
-	# start_forwarding
-
 	_run_ibg
-
-	# stop_forwarding
 
 	popd > /dev/null
 
