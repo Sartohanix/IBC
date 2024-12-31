@@ -12,7 +12,7 @@ start_xvfb_on_display() {
     fi
 
     echo -n "Starting Xvfb server on display :$display_number..."
-    ( Xvfb :"$display_number" -screen 0 1024x768x24 > /dev/null 2>&1 & )
+    ( sudo Xvfb :"$display_number" -screen 0 1024x768x24 > /dev/null 2>&1 & )
 
     sleep .1
 
@@ -37,7 +37,7 @@ stop_xvfb() {
 
     if [[ -n "$xvfb_pid" ]]; then
         echo -n "Stopping Xvfb server on display :$display_number..."
-        kill "$xvfb_pid"
+        sudo kill "$xvfb_pid"
         echo " Done. (PID = $xvfb_pid)"
     else
         echo "No Xvfb server running on display :$display_number."
