@@ -48,22 +48,32 @@ start_xvfb() {
     local max_display_number=99
     local display_number=1
 
-    while [[ $display_number -le $max_display_number ]]; do
-        if start_xvfb_on_display "$display_number" > /dev/null 2>&1; then
-            echo "Started Xvfb server on display :$display_number."
-
-            # Set the global variable for the current Xvfb display
-            _current_xvfb_display_=$display_number
-
-            return 0
-        fi
-        display_number=$((display_number + 1))
-    done
-
-    echo "[start_xvfb ERROR] Failed to start Xvfb server on any display up to: $max_display_number."
+    # Global variable storing the xvfb display number
     _current_xvfb_display_=""
 
-    return 1
+    # [DOCKER CASE HANDLING] Check if the XVFB_DISPLAY environment variable is set
+    if [ -f ".xvfb" ]; then
+        _current_xvfb_display_=":$(cat .xvfb)"
+        echo "[DEBUG] Xvfb server was detected pre-running on display $_current_xvfb_display_"
+        return 0
+    else
+        while [[ $display_number -le $max_display_number ]]; do
+            if start_xvfb_on_display "$display_number" > /dev/null 2>&1; then
+                echo "Started Xvfb server on display :$display_number."
+
+                # Set the global variable for the current Xvfb display
+                _current_xvfb_display_=$display_number
+
+                return 0
+            fi
+            display_number=$((display_number + 1))
+        done
+
+        echo "[start_xvfb ERROR] Failed to start Xvfb server on any display up to: $max_display_number."
+        _current_xvfb_display_=""
+
+        return 1
+    fi
 }
 
 
