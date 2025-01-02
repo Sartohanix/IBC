@@ -44,6 +44,7 @@ stop_xvfb() {
     fi
 }
 
+
 start_xvfb() {
     local max_display_number=99
     local display_number=1
