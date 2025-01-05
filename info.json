@@ -1,5 +1,5 @@
 {
   "description": "The unofficial Interactive Brokers Connector (IBC) ; in its source version.",
   "type": "module",
-  "dependencies": ["ibg", "ant", "xvfb", "libxi6", "libxtst6"]
+  "dependencies": ["ibg", "ant", "xvfb", "libxi6", "libxtst6", "libxrender-dev"]
 }

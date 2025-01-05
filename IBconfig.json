@@ -121,7 +121,7 @@
       "detailed_description": "Changes the socket port in TWS's API configuration at runtime, only for advanced users. Leave empty to retain the current setting.",
       "internal": false
     },
-	"TrustedTwsApiClientIPs": {
+    "TrustedTwsApiClientIPs": {
       "default": "",
       "value": "",
       "description": "Define the list of trusted IPs",
