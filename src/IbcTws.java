@@ -377,6 +377,8 @@ public class IbcTws {
             startTws();
         }
 
+        Utils.logToConsole("[ DEBUG ] Step 1 ------------------------------");
+
         configureResetOrderIdsAtStart();
         configureAllowConnections(JtsIniManager.allowIPs());
         configureApiPort();
@@ -386,10 +388,17 @@ public class IbcTws {
         configureAutoLogoffOrRestart();
         configureApiPrecautions();
 
+        Utils.logToConsole("[ DEBUG ] Step 2 ------------------------------");
+
         Utils.sendConsoleOutputToTwsLog(!Settings.settings().getBoolean("LogToConsole", false));
 
-        // mainLogReader = new MainLogReader();
-        // mainLogReader.initialize();
+
+        Utils.logToConsole("[ DEBUG ] Step 3 ------------------------------");
+
+        mainLogReader = new MainLogReader();
+        mainLogReader.initialize();
+
+        Utils.logToConsole("[ DEBUG ] Step 4 ------------------------------");
     }
 
     private static void configureResetOrderIdsAtStart() {
